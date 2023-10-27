@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.exceptions import HTTPException
 from pydantic import BaseModel
 from typing_extensions import Literal
-from typing import Any
+from typing import Any, List
 
 from datetime import datetime
 
@@ -58,7 +58,7 @@ def get_post() -> Any:
     return post
 
 
-@app.get('/dog', response_model=list[Dog], summary='Get Dogs')
+@app.get('/dog', response_model=List[Dog], summary='Get Dogs')
 def get_dogs(kind: Literal['terrier', 'bulldog', 'dalmatian'] = None) -> Any:
     if kind is None:
         return list(dogs_db.values())
