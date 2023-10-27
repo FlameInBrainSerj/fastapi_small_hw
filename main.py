@@ -2,7 +2,8 @@ from enum import Enum
 from fastapi import FastAPI
 from fastapi.exceptions import HTTPException
 from pydantic import BaseModel
-from typing import Literal, Any
+from typing_extensions import Literal
+from typing import Any
 
 from datetime import datetime
 
