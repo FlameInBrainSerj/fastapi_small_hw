@@ -59,11 +59,14 @@ def get_post() -> Any:
 
 @app.get('/dog', response_model=list[Dog], summary='Get Dogs')
 def get_dogs(kind: Literal['terrier', 'bulldog', 'dalmatian'] = None) -> Any:
-    return [
-        dogs_db[key]
-        for key in dogs_db.keys()
-        if dogs_db[key].kind == kind
-    ]
+    if kind is None:
+        return list(dogs_db.values())
+    else:
+        return [
+            dogs_db[key]
+            for key in dogs_db.keys()
+            if dogs_db[key].kind == kind
+        ]
 
 
 @app.post('/dog', response_model=Dog, summary='Create Dog')
