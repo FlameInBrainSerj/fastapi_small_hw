@@ -71,21 +71,19 @@ def get_dogs(kind: Literal['terrier', 'bulldog', 'dalmatian'] = None) -> List[Do
 
 @app.post('/dog', response_model=Dog, summary='Create Dog')
 def create_dog(dog: Dog) -> Dog:
-    for _, value in dogs_db.items():
-        if value.pk == dog.pk:
-            raise HTTPException(
-                status_code=409,
-                detail='The specified PK already exists.'
-            )
+    if dog.pk in dogs_db:
+        raise HTTPException(
+            status_code=409,
+            detail='The specified PK already exists.'
+        )
     dogs_db[list(dogs_db.keys())[-1] + 1] = dog
     return dog
 
 
 @app.get('/dog/{pk}', response_model=Dog, summary='Get Dog By Pk')
 def get_dogs_by_pk(pk: int) -> Dog:
-    for _, value in dogs_db.items():
-        if value.pk == pk:
-            return value
+    if pk in dogs_db:
+        return value
     raise HTTPException(
                 status_code=409,
                 detail='Dogs with the specified PK foes does not exist.'
