@@ -49,7 +49,7 @@ def root() -> str:
 
 
 @app.post('/post', response_model=Timestamp, summary='Get Post')
-def get_post() -> Any:
+def get_post() -> Timestamp:
     post = Timestamp(
         id=post_db[-1].id + 1,
         timestamp=int(datetime.now().timestamp())
@@ -59,19 +59,18 @@ def get_post() -> Any:
 
 
 @app.get('/dog', response_model=List[Dog], summary='Get Dogs')
-def get_dogs(kind: Literal['terrier', 'bulldog', 'dalmatian'] = None) -> Any:
+def get_dogs(kind: Literal['terrier', 'bulldog', 'dalmatian'] = None) -> List[Dog]:
     if kind is None:
         return list(dogs_db.values())
-    else:
-        return [
-            dogs_db[key]
-            for key in dogs_db.keys()
-            if dogs_db[key].kind == kind
-        ]
+    return [
+        dogs_db[key]
+        for key in dogs_db.keys()
+        if dogs_db[key].kind == kind
+    ]
 
 
 @app.post('/dog', response_model=Dog, summary='Create Dog')
-def create_dog(dog: Dog) -> Any:
+def create_dog(dog: Dog) -> Dog:
     for _, value in dogs_db.items():
         if value.pk == dog.pk:
             raise HTTPException(
@@ -83,7 +82,7 @@ def create_dog(dog: Dog) -> Any:
 
 
 @app.get('/dog/{pk}', response_model=Dog, summary='Get Dog By Pk')
-def get_dogs_by_pk(pk: int) -> Any:
+def get_dogs_by_pk(pk: int) -> Dog:
     for _, value in dogs_db.items():
         if value.pk == pk:
             return value
@@ -94,7 +93,7 @@ def get_dogs_by_pk(pk: int) -> Any:
 
 
 @app.patch('/dog/{pk}', response_model=Dog, summary='Update Dog')
-def update_dog(pk: int, dog: Dog) -> Any:
+def update_dog(pk: int, dog: Dog) -> Dog:
     for key, value in dogs_db.items():
         # We can only update the name and the kind of dog, but not his pk
         if value.pk == pk and dog.pk == pk:
