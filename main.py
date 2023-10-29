@@ -83,7 +83,7 @@ def create_dog(dog: Dog) -> Dog:
 @app.get('/dog/{pk}', response_model=Dog, summary='Get Dog By Pk')
 def get_dogs_by_pk(pk: int) -> Dog:
     if pk in dogs_db:
-        return value
+        return dogs_db[pk]
     raise HTTPException(
                 status_code=409,
                 detail='Dogs with the specified PK foes does not exist.'
