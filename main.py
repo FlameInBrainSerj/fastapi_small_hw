@@ -94,7 +94,7 @@ def get_dogs_by_pk(pk: int) -> Dog:
 
 @app.patch('/dog/{pk}', response_model=Dog, summary='Update Dog')
 def update_dog(pk: int, dog: Dog) -> Dog:
-    for _, value in dogs_db.items():
+    for key, value in dogs_db.items():
         # We can only update the name and the kind of dog, but not his pk
         if value.pk == pk and dog.pk == pk:
             dogs_db[key] = dog
